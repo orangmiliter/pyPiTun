@@ -8,6 +8,14 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install require
 ```bash
 pip install -r requirement.txt
 ```
+edit keys.py
+
+```python
+keys = dict(
+    email = 'email@mail.com',
+    password = 'passwordpitunnel',
+)
+```
 
 #### Usage :
 ##### **Linux**
