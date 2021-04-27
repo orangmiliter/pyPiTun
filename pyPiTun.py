@@ -1,7 +1,6 @@
 from bs4 import BeautifulSoup
 from keys import keys
 import requests
-import subprocess
 
 login_url = "https://www.pitunnel.com/login"
 host_url = "https://www.pitunnel.com/active_table"
@@ -27,4 +26,4 @@ for td_row in td_Search:
     td_kolom = td_row.findAll('td')
     out = td_kolom[1].text.replace('\n', "").replace("                                                                                      ","").replace("                                                                                  ","")#IniBiarPanjang
     td_split = out.strip('\n').split(':')
-    print("pi@{} -p{}".format(td_split[0], td_split[1]))
+    print("pi@{} -p{}".format(td_split[0], td_split[1])) #biarGampang
