@@ -21,7 +21,7 @@ keys = dict(
 ##### **Linux**
 
 ```bash
-ssh $(python3 pyPiTun.py)
+ssh $(python3 pyPiTun.py --user pi)
 ```
 
 ##### **Windows**
