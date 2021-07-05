@@ -75,14 +75,11 @@ def getSSH():
     # print(get_host.text)
     bs = BeautifulSoup(get_host.text, 'lxml')
     tBody = bs.find('tbody')
-    td_Search = tBody.find_all('tr', class_=None)
-    for td_row in td_Search:
-        td_kolom = td_row.findAll('td')
-        out = td_kolom[1].text.replace('\n', "").replace("                                                                                      ","").replace("                                                                                  ","")#IniBiarPanjang
-        td_split = out.strip('\n').split(':')
-        print("{}@{} -p{}".format(args.user, td_split[0], td_split[1]))#biargampang
-
-def main():
+    td = tBody.find_all('td')
+    tdRep = td[1].text.replace('\n', "").replace("                                                                                      ","").replace("                                                                                  ","")#IniBiarPanjang
+    tdSplit = tdRep.strip('\n').split(':')
+    print("{}@{} -p{}".format(args.user, tdSplit[0], tdSplit[1]))#biargampang
+    
     if args.session:
         getSession()
     if args.check:
