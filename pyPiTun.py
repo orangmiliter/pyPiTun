@@ -80,6 +80,7 @@ def getSSH():
     tdSplit = tdRep.strip('\n').split(':')
     print("{}@{} -p{}".format(args.user, tdSplit[0], tdSplit[1]))#biargampang
     
+ def main():
     if args.session:
         getSession()
     if args.check:
