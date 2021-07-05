@@ -44,11 +44,8 @@ def checkInfo():
     get_host = requests.get(host_url, cookies=cookie, headers=headers)
 
     bs = BeautifulSoup(get_host.text, 'lxml')
-    ## find rpi model or name
-    device_name = bs.find("span", {"id": "device_display_name_7254"})
-    device_name_rpi = device_name.text.split('\n')
     print("-------"*5)
-    print(device_name_rpi[2])
+    print("Device Info".center(30))
     print("-------"*5)
     ## find info device
     find_tbody = bs.find('tbody')
