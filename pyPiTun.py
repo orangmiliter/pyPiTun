@@ -72,15 +72,14 @@ def getSSH():
     }
 
     get_host = requests.get(host_url, cookies=cookie, headers=headers)
-    # print(get_host.text)
     bs = BeautifulSoup(get_host.text, 'lxml')
     tBody = bs.find('tbody')
     td = tBody.find_all('td')
     tdRep = td[1].text.replace('\n', "").replace("                                                                                      ","").replace("                                                                                  ","")#IniBiarPanjang
     tdSplit = tdRep.strip('\n').split(':')
     print("{}@{} -p{}".format(args.user, tdSplit[0], tdSplit[1]))#biargampang
-    
- def main():
+
+def main():
     if args.session:
         getSession()
     if args.check:
