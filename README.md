@@ -8,25 +8,19 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install require
 ```bash
 pip install -r requirement.txt
 ```
-edit keys.py
-
-```python
-keys = dict(
-    email = 'email@mail.com',
-    password = 'passwordpitunnel',
-)
-```
 
 #### Usage :
 ##### **Linux**
 ```bash
 get Sessions : 
 
-python3 pyPiTun.py --session
+python3 pyPiTun.py --session test
+Enter e-mail Pitunnel :pitunnel@example.com
+Input password pitunnel :
 ```
 ```bash
 Get Devices Information 
-python3 pyPiTun.py --check
+python3 pyPiTun.py -ck or --cookie test --check
 output :
 -----------------------------------
           Pi4 Model B
@@ -42,18 +36,20 @@ CPU Temperature : 61.3°C
 GPU Temperature : 61.3°C
 ```
 ```bash
-ssh $(python3 pyPiTun.py --user pi)
+ssh $(python3 pyPiTun.py -ck or --cookie test --user pi)
 ```
 
 ##### **Windows**
 ```bash
 get Sessions : 
 
-python3 pyPiTun.py --session
+python3 pyPiTun.py --session test
+Enter e-mail Pitunnel :pitunnel@example.com
+Input password pitunnel :
 ```
 ```bash
 Get Devices Information 
-python3 pyPiTun.py --check
+python3 pyPiTun.py -ck or --cookie test --check
 output :
 -----------------------------------
           Pi4 Model B
@@ -69,7 +65,7 @@ CPU Temperature : 61.3°C
 GPU Temperature : 61.3°C
 ```
 ```bash
-python3 pyPiTun.py --user pi
+python3 pyPiTun.py -ck or --cookie test --user pi
 output :
 pi@pitunnexx.com -p123423
 ssh pi@pitunnexx.com -p123423
