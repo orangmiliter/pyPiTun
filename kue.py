@@ -1,3 +1,0 @@
-cookie = dict(
-	session='rYY'
-)
