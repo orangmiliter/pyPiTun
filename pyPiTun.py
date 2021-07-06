@@ -1,20 +1,24 @@
 from bs4 import BeautifulSoup
-from keys import keys
-from kue import cookie
 from colorama import Fore, Style
+from getpass import getpass
 import requests, sys
-import argparse
+import argparse, json
 
 
 appName = sys.argv[0]
-parser = argparse.ArgumentParser(usage="python {} --session or --check or --user pi/etc".format(appName))
-parser.add_argument("-gs","--session", help="Getting a session from the web. ex: --session", action="store_true")
+parser = argparse.ArgumentParser(usage="python {} --session test and -ck test --check or --user pi/etc".format(appName))
+parser.add_argument("-gs","--session", help="Getting a session from the web. ex: --session test", action="store_true")
+parser.add_argument("-ck", "--cookie", help="select cookies file. ex: -ck test", type=str, nargs='?')
 parser.add_argument("-ci","--check", help="Get device information",  action="store_true")
 parser.add_argument("-u","--user", help="Input user of SSH. ex: --user pi", nargs="?")
 
 args = parser.parse_args()
 
 def getSession():
+#input form
+    usernamedash = input("Enter e-mail Pitunnel : ")
+    passworddash = getpass(prompt="Input password pitunnel : ")
+
     login_url = "https://www.pitunnel.com/login"
     headers = {
         'accept': 'text/html,application/xhtml+xml,application/xml',
@@ -23,16 +27,15 @@ def getSession():
 
     ses = requests.Session()
     data = {
-        "email": keys['email'],
-        "password": keys['password'],
+        "email": usernamedash,
+        "password": passworddash,
         "commit": "Login"
     }
 
     login = ses.post(login_url, data=data, headers=headers)
     get_cookie = ses.cookies.get_dict()
-    f = open('kue.py', 'w')
-    f.write("cookie = dict(\n\tsession='{}'\n)".format(get_cookie['session']))
-    f.close()
+    with open('sesi/{}.json'.format(args.session), 'w') as sesifile:
+        sesifile.write(json.dumps(get_cookie))
 def checkInfo():
 
     host_url = "https://www.pitunnel.com/devices_table"
@@ -40,6 +43,9 @@ def checkInfo():
         'accept': 'text/html,application/xhtml+xml,application/xml',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
     }
+
+    fileCookie = open('sesi/{}.json'.format(args.cookie), 'r')
+    cookie = json.load(fileCookie)
 
     get_host = requests.get(host_url, cookies=cookie, headers=headers)
 
@@ -67,6 +73,9 @@ def getSSH():
         'accept': 'text/html,application/xhtml+xml,application/xml',
         'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
     }
+
+    fileCookie = open('sesi/{}.json'.format(args.cookie), 'r')
+    cookie = json.load(fileCookie)
 
     get_host = requests.get(host_url, cookies=cookie, headers=headers)
     bs = BeautifulSoup(get_host.text, 'lxml')
