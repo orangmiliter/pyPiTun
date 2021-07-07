@@ -7,7 +7,7 @@ import argparse, json
 
 appName = sys.argv[0]
 parser = argparse.ArgumentParser(usage="python {} --session test and -ck test --check or --user pi/etc".format(appName))
-parser.add_argument("-gs","--session", help="Getting a session from the web. ex: --session test", action="store_true")
+parser.add_argument("-gs","--session", help="Getting a session from the web. ex: --session test", type=str, nargs='?')
 parser.add_argument("-ck", "--cookie", help="select cookies file. ex: -ck test", type=str, nargs='?')
 parser.add_argument("-ci","--check", help="Get device information",  action="store_true")
 parser.add_argument("-u","--user", help="Input user of SSH. ex: --user pi", nargs="?")
