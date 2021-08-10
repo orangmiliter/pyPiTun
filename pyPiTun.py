@@ -7,10 +7,11 @@ import argparse, json
 
 appName = sys.argv[0]
 parser = argparse.ArgumentParser(usage="python {} --session test and -ck test --check or --user pi/etc".format(appName))
-parser.add_argument("-gs","--session", help="Getting a session from the web. ex: --session test", nargs="?")
-parser.add_argument("-ck", "--cookie", help="select cookies file. ex: -ck test", type=str, nargs='?')
-parser.add_argument("-ci","--check", help="Get device information",  action="store_true")
-parser.add_argument("-u","--user", help="Input user of SSH. ex: --user pi", nargs="?")
+parser.add_argument("-Gs","--session", help="Getting a session from the web. ex: python pyPiTun.py --session fileCookie", nargs="?")
+parser.add_argument("-Ck", "--cookie", help="select cookies file. ex: -ck test", type=str, nargs='?')
+parser.add_argument("-ci","--check", help="Get device information. ex : python pyPiTun.py --cookie fileCookie --check",  action="store_true")
+parser.add_argument("-u","--user", help="Input user of SSH. ex: python pyPiTun.py --cookie fileCookie --user pi", nargs="?")
+parser.add_argument("-r", "--reboot", help="Reboot system. ex: python pyPiTun.py --cookie fileCookie --reboot", action="store_true")
 
 args = parser.parse_args()
 
@@ -85,6 +86,55 @@ def getSSH():
     tdSplit = tdRep.strip('\n').split(':')
     print("{}@{} -p{}".format(args.user, tdSplit[0], tdSplit[1]))#biargampang
 
+def reboot():
+    host_url = "https://www.pitunnel.com/devices_table_json"
+    host_device = "https://www.pitunnel.com/devices"
+    reboot_url = "https://www.pitunnel.com/reboot_device"
+    headers = {
+        'accept': 'text/html,application/xhtml+xml,application/xml',
+        'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'
+    }
+
+    fileCookie = open('sesi/{}.json'.format(args.cookie), 'r')
+    cookie = json.load(fileCookie)
+
+    req_deviceID = requests.get(host_url, cookies=cookie, headers=headers)
+    #
+    jLoads = json.loads(req_deviceID.text)
+    jDumps = json.loads(json.dumps(jLoads['data'], indent=4))
+
+    csrf_getToken = requests.get(host_device,  cookies=cookie, headers=headers)
+    bs = BeautifulSoup(csrf_getToken.text, 'lxml')
+    input_search = bs.find('input', {"name": "csrf_token"})
+
+    headers1 = {
+        'Connection': 'keep-alive',
+        'sec-ch-ua': '"Chromium";v="92", " Not A;Brand";v="99", "Microsoft Edge";v="92"',
+        'Accept': '*/*',
+        'X-Requested-With': 'XMLHttpRequest',
+        'sec-ch-ua-mobile': '?0',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.131 Safari/537.36 Edg/92.0.902.67',
+        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+        'Origin': 'https://www.pitunnel.com',
+        'Sec-Fetch-Site': 'same-origin',
+        'Sec-Fetch-Mode': 'cors',
+        'Sec-Fetch-Dest': 'empty',
+        'Referer': 'https://www.pitunnel.com/devices',
+        'Accept-Language': 'en-US,en;q=0.9',
+    }
+    data = {
+    'device_id': jDumps[0]['DT_RowId'],
+    'csrf_token': input_search['value']
+    }
+
+    reboot_process = requests.post(reboot_url, headers=headers1, cookies=cookie, data=data)
+    if reboot_process.status_code == 200:
+        print(Fore.GREEN + "Reboot Success" + Style.RESET_ALL)
+    else :
+        print(Fore.RED + "Reboot Failed" + Style.RESET_ALL)
+
+
+
 def main():
     if args.session:
         getSession()
@@ -92,6 +142,8 @@ def main():
         checkInfo()
     if args.user:
         getSSH()
+    if args.reboot:
+        reboot()
 
 if __name__ == "__main__":
     main()
