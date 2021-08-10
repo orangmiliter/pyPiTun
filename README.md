@@ -20,7 +20,7 @@ Input password pitunnel :
 ```
 ```bash
 Get Devices Information 
-python3 pyPiTun.py -ck or --cookie test --check
+python3 pyPiTun.py -ck or --cookie fileCookie --check
 output :
 -----------------------------------
           Pi4 Model B
@@ -36,20 +36,20 @@ CPU Temperature : 61.3°C
 GPU Temperature : 61.3°C
 ```
 ```bash
-ssh $(python3 pyPiTun.py -ck or --cookie test --user pi)
+ssh $(python3 pyPiTun.py -ck or --cookie fileCookie --user pi)
 ```
 
 ##### **Windows**
 ```bash
 get Sessions : 
 
-python3 pyPiTun.py --session test
+python3 pyPiTun.py --session fileCookie
 Enter e-mail Pitunnel :pitunnel@example.com
 Input password pitunnel :
 ```
 ```bash
 Get Devices Information 
-python3 pyPiTun.py -ck or --cookie test --check
+python3 pyPiTun.py -ck or --cookie fileCookie --check
 output :
 -----------------------------------
           Pi4 Model B
@@ -65,7 +65,7 @@ CPU Temperature : 61.3°C
 GPU Temperature : 61.3°C
 ```
 ```bash
-python3 pyPiTun.py -ck or --cookie test --user pi
+python3 pyPiTun.py -ck or --cookie fileCookie --user pi
 output :
 pi@pitunnexx.com -p123423
 ssh pi@pitunnexx.com -p123423
